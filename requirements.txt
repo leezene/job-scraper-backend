@@ -5,3 +5,4 @@ requests
 msedge-selenium-tools
 xlsxwriter
 openpyxl
+gunicorn
