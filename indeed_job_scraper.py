@@ -128,9 +128,9 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
     print("Starting to scrape indeed for `{}` in `{}`".format(job_title, job_location))
     url = generate_url(domain, date_posted, job_title, job_location)
     save_record_to_csv(None, filepath, create_new_file=True)
+    page=1
 
-    while True:
-        print(url)
+    while page<5:
         html = request_jobs_from_indeed(url)
         if not html:
             break
@@ -142,6 +142,7 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
                 unique_jobs.add(record[-1])
         sleep_for_random_interval()
         url = find_next_page(soup)
+        page = page + 1
         if not url:
             break
     print('Finished collecting {:,d} job postings.'.format(len(unique_jobs)))
