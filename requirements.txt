@@ -6,3 +6,4 @@ msedge-selenium-tools
 xlsxwriter
 openpyxl
 gunicorn
+flask-cors

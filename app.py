@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import request
 from flask.helpers import send_file
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 import indeed_job_scraper, linkedin_job_scraper
 
 
