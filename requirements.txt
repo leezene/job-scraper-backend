@@ -1,1 +1,7 @@
 Flask>=1.0,<=1.1.2
+pandas
+BeautifulSoup4
+requests
+msedge-selenium-tools
+xlsxwriter
+openpyxl
