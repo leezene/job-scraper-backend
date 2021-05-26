@@ -1,11 +1,12 @@
 from flask import Flask
 from flask import request
 from flask.helpers import send_file
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import indeed_job_scraper
 import linkedin_job_scraper
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route("/hello")
@@ -13,6 +14,7 @@ def hello():
     return "Hello, World!"
 
 
+@cross_origin(origin='*')
 @app.route("/", methods=['GET', 'POST'])
 def scraper():
     # if request.method == 'GET':
