@@ -1,13 +1,16 @@
 from flask import Flask
 from flask import request
 from flask.helpers import send_file
+
 app = Flask(__name__)
 import indeed_job_scraper, linkedin_job_scraper
 
 
-# @app.route("/")
-# def hello():
-#     return "Hello, World!"
+@app.route("/hello")
+def hello():
+    return "Hello, World!"
+
+
 @app.route("/", methods=['GET', 'POST'])
 def scraper():
     # if request.method == 'GET':
