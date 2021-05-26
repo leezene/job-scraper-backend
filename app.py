@@ -29,5 +29,5 @@ def scraper():
     return download_file(title)
 
 
-def download_file(file, title):
-    return send_file(os.path.join('results.xlsx', title + '.xlsx'))
+def download_file(title):
+    return send_file('results.xlsx', as_attachment=True)
