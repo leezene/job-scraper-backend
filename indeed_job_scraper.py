@@ -12,7 +12,7 @@ EmailCredentials = namedtuple("EmailCredentials", ['username', 'password', 'send
 
 
 def generate_url(domain,date_posted, job_title, job_location):
-    url_template = "https://" + domain + "jobs?q={}&l={}&fromage={}"
+    url_template = "https://" + domain + "/jobs?q={}&l={}&fromage={}"
     url = url_template.format(job_title, job_location,date_posted)
     return url
 
