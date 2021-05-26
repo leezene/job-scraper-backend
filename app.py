@@ -2,9 +2,10 @@ from flask import Flask
 from flask import request
 from flask.helpers import send_file
 from flask_cors import CORS
+import indeed_job_scraper
+import linkedin_job_scraper
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-import indeed_job_scraper, linkedin_job_scraper
 
 
 @app.route("/hello")
