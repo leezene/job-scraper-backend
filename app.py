@@ -1,12 +1,6 @@
 from flask import Flask
 from flask import request
 from flask.helpers import send_file
-import io
-import os
-import signal
-import logging
-import pandas as pd
-
 app = Flask(__name__)
 import indeed_job_scraper, linkedin_job_scraper
 

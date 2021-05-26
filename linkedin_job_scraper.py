@@ -6,6 +6,7 @@ from email.message import EmailMessage
 from collections import namedtuple
 import smtplib
 import csv
+from openpyxl import load_workbook
 
 
 EmailCredentials = namedtuple("EmailCredentials", ['username', 'password', 'sender', 'recipient'])
