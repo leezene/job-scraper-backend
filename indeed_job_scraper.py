@@ -19,7 +19,7 @@ def generate_url(domain,date_posted, job_title, job_location):
 
 def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
-    header = ["JobTitle", "Company", "Location", "Salary", "PostDate", "Summary", "JobUrl"]
+    header = ["JobTitle", "Company", "Location", "Summary", "Salary", "PostDate", "JobUrl"]
     if create_new_file:
         # with open(filepath, mode='w', newline='', encoding='utf-8') as f:
         print(filepath)
