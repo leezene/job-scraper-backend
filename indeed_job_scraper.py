@@ -128,9 +128,10 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
     print("Starting to scrape indeed for `{}` in `{}`".format(job_title, job_location))
     url = generate_url(domain, date_posted, job_title, job_location)
     save_record_to_csv(None, filepath, create_new_file=True)
-    page=1
+    page = 1
 
-    while page<5:
+    while page < 4:
+        print(url)
         html = request_jobs_from_indeed(url)
         if not html:
             break
