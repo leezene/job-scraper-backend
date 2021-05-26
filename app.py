@@ -2,7 +2,6 @@ from flask import Flask
 from flask import request
 from flask.helpers import send_file
 from flask_cors import CORS
-
 app = Flask(__name__)
 CORS(app)
 import indeed_job_scraper, linkedin_job_scraper
@@ -18,13 +17,14 @@ def scraper():
     # if request.method == 'GET':
     #     return 'hello'
     # else:
-    type = request.args.get('type')
+    domain = request.args.get('domain')
+    date_posted = request.args.get('date_posted')
     title = request.args.get('title')
     loc = request.args.get('loc')
-    if type == 'indeed':
-        indeed_job_scraper.main(title, loc, 'results.xlsx')
-    if type == 'linkedin':
-        linkedin_job_scraper.main(title, loc, 'results.xlsx')
+    if 'indeed' in domain:
+        indeed_job_scraper.main(domain, date_posted, title, loc, 'results.xlsx')
+    if 'linkedin' in domain:
+        linkedin_job_scraper.main(domain, date_posted, title, loc, 'results.xlsx')
     return download_file(title)
 
 

@@ -11,9 +11,9 @@ from openpyxl import load_workbook
 EmailCredentials = namedtuple("EmailCredentials", ['username', 'password', 'sender', 'recipient'])
 
 
-def generate_url(job_title, job_location):
-    url_template = "https://ae.indeed.com/jobs?q={}&l={}"
-    url = url_template.format(job_title, job_location)
+def generate_url(domain,date_posted, job_title, job_location):
+    url_template = "https://" + domain + "jobs?q={}&l={}&fromage={}"
+    url = url_template.format(job_title, job_location,date_posted)
     return url
 
 
@@ -123,10 +123,10 @@ def extract_job_card_data(card):
     return job_title, company, location, job_summary, salary, post_date, job_url
 
 
-def main(job_title, job_location, filepath, email=None):
+def main(domain, date_posted, job_title, job_location, filepath, email=None):
     unique_jobs = set()  # track job urls to avoid collecting duplicate records
     print("Starting to scrape indeed for `{}` in `{}`".format(job_title, job_location))
-    url = generate_url(job_title, job_location)
+    url = generate_url(domain, date_posted, job_title, job_location)
     save_record_to_csv(None, filepath, create_new_file=True)
 
     while True:
