@@ -21,13 +21,24 @@ def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
     header = ["JobTitle", "Company", "Location", "Salary", "PostDate", "Summary", "JobUrl"]
     if create_new_file:
-        with open(filepath, mode='w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow(header)
+        # with open(filepath, mode='w', newline='', encoding='utf-8') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(header)
+        wb = load_workbook(filename=filepath)
+        wb.remove(wb.worksheets[0])
+        wb.create_sheet()
+        ws = wb.worksheets[0]
+        ws.append(header)
+        wb.save(filepath)
     else:
-        with open(filepath, mode='a+', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow(record)
+        # with open(filepath, mode='a+', newline='', encoding='utf-8') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(record)
+        wb = load_workbook(filename=filepath)
+        # Select First Worksheet
+        ws = wb.worksheets[0]
+        ws.append(record)
+        wb.save(filepath)
 
 
 def email_jobs_file(filepath, email):
@@ -118,7 +129,6 @@ def main(job_title, job_location, filepath, email=None):
     while True:
         print(url)
         html = request_jobs_from_indeed(url)
-        print(html)
         if not html:
             break
         cards, soup = collect_job_cards_from_page(html)
@@ -140,7 +150,7 @@ if __name__ == '__main__':
     # job search settings
     title = 'flutter'
     loc = ''
-    path = 'linkedin.csv'
+    path = 'results.xlsx'
 
     # include email settings if you want to email the file
     # currently setup for GMAIL... see notes above.

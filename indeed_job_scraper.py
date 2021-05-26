@@ -27,8 +27,6 @@ def save_record_to_csv(record, filepath, create_new_file=False):
         #     # writer = csv.writer(f)
         #     # writer.writerow(header)
         wb = load_workbook(filename=filepath)
-        #     # Select First Worksheet
-        # idx = wb.sheetnames.index('jobs')
         wb.remove(wb.worksheets[0])
         wb.create_sheet()
         ws = wb.worksheets[0]
@@ -156,7 +154,7 @@ if __name__ == '__main__':
     # job search settings
     title = 'office assistant'
     loc = ''
-    path = 'data_scientist_jobs.xlsx'
+    path = 'results.xlsx'
 
     # include email settings if you want to email the file
     # currently setup for GMAIL... see notes above.
