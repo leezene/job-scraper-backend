@@ -9,11 +9,8 @@ import csv
 from openpyxl import load_workbook
 
 
-EmailCredentials = namedtuple("EmailCredentials", ['username', 'password', 'sender', 'recipient'])
-
-
 def generate_url(domain, date_posted, job_title, job_location):
-    url_template = "https://"+domain+"/jobs/search?f_TPR={}&keywords={}&location={}"
+    url_template = "https://" + domain + "/jobs/search?f_TPR={}&keywords={}&location={}"
     url = url_template.format(date_posted, job_title, job_location)
     return url
 
@@ -22,41 +19,18 @@ def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
     header = ["JobTitle", "Company", "Location", "Summary", "PostDate", "JobUrl"]
     if create_new_file:
-        # with open(filepath, mode='w', newline='', encoding='utf-8') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow(header)
         wb = load_workbook(filename=filepath)
         wb.remove(wb.worksheets[0])
         wb.create_sheet()
         ws = wb.worksheets[0]
         ws.append(header)
-        wb.save(filepath)
+        wb.save('output/' + filepath)
     else:
-        # with open(filepath, mode='a+', newline='', encoding='utf-8') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow(record)
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
         ws = wb.worksheets[0]
         ws.append(record)
-        wb.save(filepath)
-
-
-def email_jobs_file(filepath, email):
-    """This is currently setup for GMAIL. However, you may need to enable `less secure apps` for
-    your email account if you want this to work. See: https://support.google.com/accounts/answer/6010255?hl=en"""
-    smtp_host = 'smtp.gmail.com'
-    smtp_port = 587
-    with smtplib.SMTP(host=smtp_host, port=smtp_port) as server:
-        server.starttls()
-        server.login(email.username, email.password)
-        message = EmailMessage()
-        message['From'] = email.sender
-        message['To'] = email.recipient
-        message['Subject'] = "Updated jobs file"
-        message['Body'] = "The updated Indeed postings are attached."
-        message.add_attachment(open(filepath, 'r').read(), filename="indeed.csv")
-        server.send_message(message)
+        wb.save('output/' + filepath)
 
 
 def collect_job_cards_from_page(html):
@@ -94,7 +68,7 @@ def find_next_page(soup):
 
 def extract_job_card_data(card):
     try:
-        job_title = card.find('h3','base-search-card__title').text.strip()
+        job_title = card.find('h3', 'base-search-card__title').text.strip()
     except AttributeError:
         job_title = ''
     try:
@@ -117,8 +91,9 @@ def extract_job_card_data(card):
         salary = ''
     except AttributeError:
         salary = ''
-    job_url = card.find('a','base-card__full-link').get('href')
+    job_url = card.find('a', 'base-card__full-link').get('href')
     return job_title, company, location, job_summary, post_date, job_url
+
 
 def main(domain, date_posted, job_title, job_location, filepath, email=None):
     unique_jobs = set()  # track job urls to avoid collecting duplicate records

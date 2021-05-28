@@ -1,6 +1,9 @@
+import os
+from os import remove
+from shutil import move
 from flask import Flask
 from flask import request
-from flask.helpers import send_file
+from flask.helpers import send_file, send_from_directory
 from flask_cors import CORS, cross_origin
 import indeed_job_scraper
 import linkedin_job_scraper
@@ -29,4 +32,6 @@ def scraper():
 
 
 def download_file(title):
-    return send_file('results.xlsx', as_attachment=True)
+    remove('output/' + title + '.xlsx')
+    move('output/results.xlsx', 'output/' + title + '.xlsx')
+    return send_file('output/' + title + '.xlsx', as_attachment=True)
