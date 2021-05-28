@@ -32,6 +32,7 @@ def scraper():
 
 
 def download_file(title):
-    remove('output/' + title + '.xlsx')
+    if os.path.exists('output/' + title + '.xlsx'):
+        remove('output/' + title + '.xlsx')
     move('output/results.xlsx', 'output/' + title + '.xlsx')
     return send_file('output/' + title + '.xlsx', as_attachment=True)
