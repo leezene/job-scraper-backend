@@ -1,4 +1,5 @@
 import os
+import time
 from os import remove
 from shutil import move
 from flask import Flask
@@ -32,7 +33,8 @@ def scraper():
 
 
 def download_file(title):
-    if os.path.exists('output/' + title + '.xlsx'):
-        remove('output/' + title + '.xlsx')
-    move('output/results.xlsx', 'output/' + title + '.xlsx')
-    return send_file('output/' + title + '.xlsx', as_attachment=True)
+    # if os.path.exists('output/' + title + '.xlsx'):
+    #     remove('output/' + title + '.xlsx')
+    # move('output/results.xlsx', 'output/' + title + '.xlsx')
+    # time.sleep(1)
+    return send_file('results.xlsx', as_attachment=True)

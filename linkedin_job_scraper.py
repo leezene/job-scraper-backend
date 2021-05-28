@@ -24,13 +24,13 @@ def save_record_to_csv(record, filepath, create_new_file=False):
         wb.create_sheet()
         ws = wb.worksheets[0]
         ws.append(header)
-        wb.save('output/' + filepath)
+        wb.save(filepath)
     else:
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
         ws = wb.worksheets[0]
         ws.append(record)
-        wb.save('output/' + filepath)
+        wb.save(filepath)
 
 
 def collect_job_cards_from_page(html):

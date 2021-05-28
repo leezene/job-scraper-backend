@@ -28,14 +28,14 @@ def save_record_to_csv(record, filepath, create_new_file=False):
         wb.create_sheet()
         ws = wb.worksheets[0]
         # ws.append(header)
-        wb.save('output/' + filepath)
+        wb.save(filepath)
 
     else:
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
         ws = wb.worksheets[0]
         ws.append(record)
-        wb.save('output/' + filepath)
+        wb.save(filepath)
 
 
 def collect_job_cards_from_page(html):
@@ -108,7 +108,7 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
     save_record_to_csv(None, filepath, create_new_file=True)
     page = 1
 
-    while page < 4:
+    while page < 3:
         print(url)
         html = request_jobs_from_indeed(url)
         if not html:
