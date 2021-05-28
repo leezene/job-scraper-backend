@@ -13,51 +13,29 @@ EmailCredentials = namedtuple("EmailCredentials", ['username', 'password', 'send
 
 def generate_url(domain, date_posted, job_title, job_location):
     url_template = "https://" + domain + "/jobs?q={}&l={}&fromage={}"
+    print(job_title)
     url = url_template.format(job_title, job_location, date_posted)
     return url
 
 
 def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
-    header = ["JobTitle", "Company", "Location", "Summary", "Salary", "PostDate", "JobUrl"]
+    header = ["JobTitle", "Company", "Location", "Summary", "PostDate", "JobUrl"]
     if create_new_file:
-        # with open(filepath, mode='w', newline='', encoding='utf-8') as f:
         print(filepath)
-        #     # writer = csv.writer(f)
-        #     # writer.writerow(header)
         wb = load_workbook(filename=filepath)
-        wb.remove(wb.worksheets[0])
+        # wb.remove(wb.worksheets[0])
         wb.create_sheet()
         ws = wb.worksheets[0]
-        ws.append(header)
+        # ws.append(header)
         wb.save(filepath)
 
     else:
-        # with open(filepath, mode='a+', newline='', encoding='utf-8') as f:
-        # writer = csv.writer(f)
-        # writer.writerow(record)
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
         ws = wb.worksheets[0]
         ws.append(record)
         wb.save(filepath)
-
-
-def email_jobs_file(filepath, email):
-    """This is currently setup for GMAIL. However, you may need to enable `less secure apps` for
-    your email account if you want this to work. See: https://support.google.com/accounts/answer/6010255?hl=en"""
-    smtp_host = 'smtp.gmail.com'
-    smtp_port = 587
-    with smtplib.SMTP(host=smtp_host, port=smtp_port) as server:
-        server.starttls()
-        server.login(email.username, email.password)
-        message = EmailMessage()
-        message['From'] = email.sender
-        message['To'] = email.recipient
-        message['Subject'] = "Updated jobs file"
-        message['Body'] = "The updated Indeed postings are attached."
-        message.add_attachment(open(filepath, 'r').read(), filename="indeed.csv")
-        server.send_message(message)
 
 
 def collect_job_cards_from_page(html):
@@ -120,7 +98,7 @@ def extract_job_card_data(card):
     except AttributeError:
         salary = ''
     job_url = 'https://ae.indeed.com' + atag.get('href')
-    return job_title, company, location, job_summary, salary, post_date, job_url
+    return job_title, company, location, job_summary, post_date, job_url
 
 
 def main(domain, date_posted, job_title, job_location, filepath, email=None):
@@ -147,27 +125,3 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
         if not url:
             break
     print('Finished collecting {:,d} job postings.'.format(len(unique_jobs)))
-    if email:
-        email_jobs_file(filepath, email)
-
-
-if __name__ == '__main__':
-    # job search settings
-    title = 'office assistant'
-    loc = ''
-    path = 'results.xlsx'
-
-    # include email settings if you want to email the file
-    # currently setup for GMAIL... see notes above.
-    email_settings = EmailCredentials(
-        username='email@gmail.com',
-        password='password',
-        sender='from@gmail.com',
-        recipient='to@gmail.com'
-    )
-
-    # using email settings
-    # main(title, loc, path, email_settings)
-
-    # without email settings
-    main(title, loc, path)

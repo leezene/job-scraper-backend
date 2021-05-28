@@ -4,6 +4,7 @@ from flask.helpers import send_file
 from flask_cors import CORS, cross_origin
 import indeed_job_scraper
 import linkedin_job_scraper
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -17,17 +18,13 @@ def hello():
 @cross_origin(origin='*')
 @app.route("/", methods=['GET', 'POST'])
 def scraper():
-    # if request.method == 'GET':
-    #     return 'hello'
-    # else:
     domain = request.args.get('domain')
     date_posted = request.args.get('date_posted')
     title = request.args.get('title')
     loc = request.args.get('loc')
-    if 'indeed' in domain:
-        indeed_job_scraper.main(domain, date_posted, title, loc, 'results.xlsx')
-    if 'linkedin' in domain:
-        linkedin_job_scraper.main(domain, date_posted, title, loc, 'results.xlsx')
+    linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, 'results.xlsx')
+    indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, 'results.xlsx')
+
     return download_file(title)
 
 
