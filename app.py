@@ -26,8 +26,8 @@ def scraper():
     date_posted = request.args.get('date_posted')
     title = request.args.get('title')
     loc = request.args.get('loc')
-    linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, 'results.xlsx')
-    indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, 'results.xlsx')
+    linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, '/var/www/html/flaskapp/results.xlsx')
+    indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, '/var/www/html/flaskapp/results.xlsx')
 
     return download_file(title)
 
@@ -35,6 +35,6 @@ def scraper():
 def download_file(title):
     # if os.path.exists('output/' + title + '.xlsx'):
     #     remove('output/' + title + '.xlsx')
-    # move('output/results.xlsx', 'output/' + title + '.xlsx')
+    # move('output//var/www/html/flaskapp/results.xlsx', 'output/' + title + '.xlsx')
     # time.sleep(1)
-    return send_file('results.xlsx', as_attachment=True)
+    return send_file('/var/www/html/flaskapp/results.xlsx', as_attachment=True)
