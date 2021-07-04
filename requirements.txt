@@ -7,3 +7,4 @@ xlsxwriter
 openpyxl
 gunicorn
 flask-cors
+python-decouple

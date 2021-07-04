@@ -8,7 +8,9 @@ from flask.helpers import send_file, send_from_directory
 from flask_cors import CORS, cross_origin
 import indeed_job_scraper
 import linkedin_job_scraper
+from decouple import config
 
+OUTPUT_DIR = config('OUTPUT_DIR')
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -26,8 +28,8 @@ def scraper():
     date_posted = request.args.get('date_posted')
     title = request.args.get('title')
     loc = request.args.get('loc')
-    linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, '/var/www/html/flaskapp/results.xlsx')
-    indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, '/var/www/html/flaskapp/results.xlsx')
+    linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
+    indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
 
     return download_file(title)
 
