@@ -10,7 +10,8 @@ import indeed_job_scraper
 import linkedin_job_scraper
 from decouple import config
 
-OUTPUT_DIR = config('OUTPUT_DIR')
+OUTPUT_DIR = config('OUTPUT_DIR', '')
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -39,4 +40,4 @@ def download_file(title):
     #     remove('output/' + title + '.xlsx')
     # move('output//var/www/html/flaskapp/results.xlsx', 'output/' + title + '.xlsx')
     # time.sleep(1)
-    return send_file('/var/www/html/flaskapp/results.xlsx', as_attachment=True)
+    return send_file(OUTPUT_DIR + 'results.xlsx', as_attachment=True)
