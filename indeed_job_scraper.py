@@ -40,7 +40,7 @@ def save_record_to_csv(record, filepath, create_new_file=False):
 
 def collect_job_cards_from_page(html):
     soup = BeautifulSoup(html, 'html.parser')
-    cards = soup.find_all('div', 'jobsearch-SerpJobCard')
+    cards = soup.find_all('a', 'result')
     return cards, soup
 
 
@@ -72,7 +72,8 @@ def find_next_page(soup):
 
 
 def extract_job_card_data(card):
-    atag = card.h2.a
+    atag = card.h2.span
+    print(atag)
     try:
         job_title = atag.get('title')
     except AttributeError:
@@ -97,7 +98,7 @@ def extract_job_card_data(card):
         salary = card.find('span', 'salarytext').text.strip()
     except AttributeError:
         salary = ''
-    job_url = 'https://ae.indeed.com' + atag.get('href')
+    job_url = 'https://ae.indeed.com' + card.get('href')
     return job_title, company, location, job_summary, post_date, job_url
 
 
