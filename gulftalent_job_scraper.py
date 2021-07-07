@@ -15,12 +15,14 @@ def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
     header = ["JobTitle", "Company", "Location", "Summary", "PostDate", "JobUrl"]
     if create_new_file:
+        print(filepath)
         wb = load_workbook(filename=filepath)
-        wb.remove(wb.worksheets[0])
+        # wb.remove(wb.worksheets[0])
         wb.create_sheet()
         ws = wb.worksheets[0]
-        ws.append(header)
+        # ws.append(header)
         wb.save(filepath)
+
     else:
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
@@ -45,9 +47,3 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
         delta = d1 - datetime_time
         result = job['title'], job['company_name'], job['location'], '', str(delta.days) + ' days ago', job_base_url + job['link']
         save_record_to_csv(result, filepath)
-
-
-
-
-
-# main("gulftalent.com", '', 'developer', '', 'results.xlsx')

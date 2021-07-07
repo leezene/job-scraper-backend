@@ -43,6 +43,3 @@ def download_file(title):
     # move('output//var/www/html/flaskapp/results.xlsx', 'output/' + title + '.xlsx')
     # time.sleep(1)
     return send_file(OUTPUT_DIR + 'results.xlsx', as_attachment=True)
-
-app.run(debug=True)
-
