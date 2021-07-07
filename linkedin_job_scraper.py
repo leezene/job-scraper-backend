@@ -8,7 +8,6 @@ import smtplib
 import csv
 from openpyxl import load_workbook
 
-
 def generate_url(domain, date_posted, job_title, job_location):
     url_template = "https://" + domain + "/jobs/search?f_TPR={}&keywords={}&location={}"
     url = url_template.format(date_posted, job_title, job_location)

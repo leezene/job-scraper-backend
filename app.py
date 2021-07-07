@@ -2,13 +2,15 @@ import os
 import time
 from os import remove
 from shutil import move
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 from flask.helpers import send_file, send_from_directory
 from flask_cors import CORS, cross_origin
 import indeed_job_scraper
 import linkedin_job_scraper
 from decouple import config
+import gulftalent_job_scraper
+
 
 OUTPUT_DIR = config('OUTPUT_DIR', '')
 
@@ -31,7 +33,7 @@ def scraper():
     loc = request.args.get('loc')
     linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
     indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
-
+    gulftalent_job_scraper.main("gulftalent.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
     return download_file(title)
 
 
