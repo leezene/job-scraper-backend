@@ -31,9 +31,9 @@ def scraper():
     date_posted = request.args.get('date_posted')
     title = request.args.get('title')
     loc = request.args.get('loc')
-    if 'linkedin.com' in domain:
+    if 'linkedin' in domain:
         linkedin_job_scraper.main("linkedin.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
-    elif 'ae.indeed.com' in domain:
+    elif 'indeed' in domain:
         indeed_job_scraper.main("ae.indeed.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
     else:
         gulftalent_job_scraper.main("gulftalent.com", date_posted, title, loc, OUTPUT_DIR + 'results.xlsx')
