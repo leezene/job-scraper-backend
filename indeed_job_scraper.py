@@ -72,22 +72,22 @@ def find_next_page(soup):
 
 
 def extract_job_card_data(card):
-    atag = card.h2.span
-    print(atag)
+    atag = card.h2.find('span', {"title": True})
     try:
-        job_title = atag.get('title')
+        job_title = atag.get('title') if atag.get('title') is not None else ''
     except AttributeError:
         job_title = ''
     try:
-        company = card.find('span', 'company').text.strip()
+        company = card.find('span', 'companyName').a.text.strip() if card.find('span', 'companyName').a is not None \
+            else card.find('span', 'companyName').text.strip()
     except AttributeError:
         company = ''
     try:
-        location = card.find('div', 'recJobLoc').get('data-rc-loc')
+        location = card.find('div', 'companyLocation').text.strip()
     except AttributeError:
         location = ''
     try:
-        job_summary = card.find('div', 'summary').text.strip()
+        job_summary = card.find('div', 'job-snippet').li.text.strip()
     except AttributeError:
         job_summary = ''
     try:
