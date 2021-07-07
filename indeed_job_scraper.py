@@ -22,14 +22,12 @@ def save_record_to_csv(record, filepath, create_new_file=False):
     """Save an individual record to file; set `new_file` flag to `True` to generate new file"""
     header = ["JobTitle", "Company", "Location", "Summary", "PostDate", "JobUrl"]
     if create_new_file:
-        print(filepath)
         wb = load_workbook(filename=filepath)
-        # wb.remove(wb.worksheets[0])
+        wb.remove(wb.worksheets[0])
         wb.create_sheet()
         ws = wb.worksheets[0]
-        # ws.append(header)
+        ws.append(header)
         wb.save(filepath)
-
     else:
         wb = load_workbook(filename=filepath)
         # Select First Worksheet
