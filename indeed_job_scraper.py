@@ -40,7 +40,7 @@ def save_record_to_csv(record, filepath, create_new_file=False):
 
 def collect_job_cards_from_page(html):
     soup = BeautifulSoup(html, 'html.parser')
-    cards = soup.find_all('div', 'jobsearch-SerpJobCard')
+    cards = soup.find_all('a', 'result')
     return cards, soup
 
 
@@ -72,21 +72,22 @@ def find_next_page(soup):
 
 
 def extract_job_card_data(card):
-    atag = card.h2.a
+    atag = card.h2.find('span', {"title": True})
     try:
-        job_title = atag.get('title')
+        job_title = atag.get('title') if atag.get('title') is not None else ''
     except AttributeError:
         job_title = ''
     try:
-        company = card.find('span', 'company').text.strip()
+        company = card.find('span', 'companyName').a.text.strip() if card.find('span', 'companyName').a is not None \
+            else card.find('span', 'companyName').text.strip()
     except AttributeError:
         company = ''
     try:
-        location = card.find('div', 'recJobLoc').get('data-rc-loc')
+        location = card.find('div', 'companyLocation').text.strip()
     except AttributeError:
         location = ''
     try:
-        job_summary = card.find('div', 'summary').text.strip()
+        job_summary = card.find('div', 'job-snippet').li.text.strip()
     except AttributeError:
         job_summary = ''
     try:
@@ -97,7 +98,7 @@ def extract_job_card_data(card):
         salary = card.find('span', 'salarytext').text.strip()
     except AttributeError:
         salary = ''
-    job_url = 'https://ae.indeed.com' + atag.get('href')
+    job_url = 'https://ae.indeed.com' + card.get('href')
     return job_title, company, location, job_summary, post_date, job_url
 
 
