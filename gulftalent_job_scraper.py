@@ -43,12 +43,13 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
         datetime_time = datetime.fromtimestamp(job['posted_date_ts'])
         d1 = datetime.now()
         delta = d1 - datetime_time
-        if (delta.days <= int(date_posted)):
+        if date_posted == '' or date_posted == None:
             result = job['title'], job['company_name'], job['location'], '', str(delta.days) + ' days ago', job_base_url + job['link']
             save_record_to_csv(result, filepath)
-        elif date_posted == '' :
+        elif delta.days <= int(date_posted):
             result = job['title'], job['company_name'], job['location'], '', str(delta.days) + ' days ago', job_base_url + job['link']
             save_record_to_csv(result, filepath)
+
         else:
             pass
 

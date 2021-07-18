@@ -115,9 +115,26 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
         cards, soup = collect_job_cards_from_page(html)
         for card in cards:
             record = extract_job_card_data(card)
-            if not record[-1] in unique_jobs:
-                save_record_to_csv(record, filepath)
-                unique_jobs.add(record[-1])
+            raw_date = record[4]
+
+            if 'Just posted' in raw_date or 'Today' in raw_date:
+                date = 0
+            else:
+                date = int(raw_date.replace('days ago', '').replace('day ago', '').replace('+', ''))
+
+            if date_posted == None:
+                if not record[-1] in unique_jobs:
+                    save_record_to_csv(record, filepath)
+                    unique_jobs.add(record[-1])
+            elif date <= int(date_posted) :
+                if not record[-1] in unique_jobs:
+                    save_record_to_csv(record, filepath)
+                    unique_jobs.add(record[-1])
+
+            else:
+                pass
+            print(record[4])
+
         sleep_for_random_interval()
         url = find_next_page(soup)
         page = page + 1
