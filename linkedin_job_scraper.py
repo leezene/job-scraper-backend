@@ -8,6 +8,32 @@ import smtplib
 import csv
 from openpyxl import load_workbook
 
+
+def filter_days(days):
+    # print(days)
+    if 'week' in days:
+        days = int(days.replace('weeks','').replace('ago','').replace('week',''))
+        days = days * 7
+        return days
+
+    if 'month' in days:
+        days = int(days.replace('months','').replace('ago','').replace('month',''))
+        days = days * 30
+        return days
+
+    if 'day' in days:
+        days = int(days.replace('days','').replace('ago','').replace('day',''))
+
+        return days
+
+    if 'today' in days:
+        return 1
+
+    else:
+        return 1
+
+
+
 def generate_url(domain, date_posted, job_title, job_location):
     url_template = "https://" + domain + "/jobs/search?f_TPR={}&keywords={}&location={}"
     url = url_template.format(date_posted, job_title, job_location)
@@ -108,9 +134,18 @@ def main(domain, date_posted, job_title, job_location, filepath, email=None):
         cards, soup = collect_job_cards_from_page(html)
         for card in cards:
             record = extract_job_card_data(card)
-            if not record[-1] in unique_jobs:
-                save_record_to_csv(record, filepath)
-                unique_jobs.add(record[-1])
+            # print(filter_days(record[4]), record[4])
+            if date_posted == None:
+                if not record[-1] in unique_jobs:
+                    save_record_to_csv(record, filepath)
+                    unique_jobs.add(record[-1])
+            else:
+                if int(date_posted) >= filter_days(record[4]):
+                    if not record[-1] in unique_jobs:
+                        save_record_to_csv(record, filepath)
+                        unique_jobs.add(record[-1])
+                else:
+                    pass
         sleep_for_random_interval()
         url = find_next_page(soup)
         if not url:
