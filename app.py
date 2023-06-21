@@ -12,7 +12,7 @@ from decouple import config
 import gulftalent_job_scraper
 
 
-OUTPUT_DIR = config('OUTPUT_DIR', 'output/')
+OUTPUT_DIR = config('OUTPUT_DIR', '/var/www/html/job-scraper-backend/output/')
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
